@@ -1,0 +1,26 @@
+{
+  "_instructions": "Default values that are always applied unless overridden in the applicant JSON",
+  
+  "passport_type": "Ordinary passport",
+  "number_of_entries": "Single entry",
+  "reference_type": "Inviting person",
+  
+  "purpose_description": "",
+  "additional_info": "",
+  
+  "applicant_pays": false,
+  "third_party_pays": true,
+  "inviter_pays": true,
+  
+  "cash": false,
+  "credit_cards": false,
+  "accommodation_prepaid": true,
+  "transport_prepaid": true,
+  "travellers_cheques": false,
+  "all_expenses_covered": true,
+  "other_means": false,
+  
+  "eu_family_member": false,
+  "has_residence_permit": false
+}
+
