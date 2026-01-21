@@ -684,19 +684,6 @@
           "default_value": "on"
         },
         {
-          "id": "reisedaten.reisekostenUebernahme.einlader",
-          "name": "",
-          "label": "Sponsor (host, inviting company or organisation)",
-          "field_type": "checkbox",
-          "required": false,
-          "selector": "[id=\"reisedaten.reisekostenUebernahme.einlader\"]",
-          "section": "Personal Data",
-          "options": [],
-          "max_length": null,
-          "placeholder": null,
-          "default_value": "on"
-        },
-        {
           "id": "reisedaten.lebensunterhalt.bar",
           "name": "",
           "label": "Cash",

@@ -1,0 +1,53 @@
+{
+  "surname": "",
+  "first_name": "",
+  "date_of_birth": "DD.MM.YYYY",
+  "place_of_birth": "",
+  "country_of_birth": "",
+  "gender": "Male | Female",
+  "marital_status": "Single | Married | Divorced | Widowed | Separated",
+  "nationality": "",
+
+  "employer": "",
+  "employer_street": "",
+  "employer_house_number": "",
+  "employer_postal_code": "",
+  "employer_city": "",
+  "employer_country": "",
+
+  "street": "",
+  "house_number": "",
+  "apartment": "",
+  "postal_code": "",
+  "city": "",
+  "country": "",
+  "phone": "",
+  "email": "",
+
+  "passport_number": "",
+  "passport_issue_date": "DD.MM.YYYY",
+  "passport_expiry_date": "DD.MM.YYYY",
+  "passport_issuing_country": "",
+  "passport_issued_by": "",
+  "passport_issue_place": "",
+
+  "first_entry_country": "Germany",
+  "main_destination": "Germany",
+  "visa_start_date": "DD.MM.YYYY",
+  "visa_end_date": "DD.MM.YYYY",
+
+  "inviter_surname": "",
+  "inviter_first_name": "",
+  "inviter_gender": "Male | Female",
+  "inviter_date_of_birth": "DD.MM.YYYY",
+  "inviter_birth_place": "",
+  "inviter_nationality": "",
+  "inviter_street": "",
+  "inviter_house_number": "",
+  "inviter_postal_code": "",
+  "inviter_city": "",
+  "inviter_country": "",
+  "inviter_phone": "",
+  "inviter_email": ""
+}
+

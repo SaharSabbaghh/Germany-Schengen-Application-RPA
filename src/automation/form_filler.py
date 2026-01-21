@@ -306,20 +306,25 @@ class VidexFormFiller:
 
     def _fill_checkbox_field(self, field_id: str, value: bool) -> bool:
         """Fill a checkbox field."""
-        # If value is False, just skip - leave checkbox in default state
-        if not value:
-            return True
-        
         selector = self._get_selector(field_id)
-        element = self._wait_for_element(selector)
+        element = self._wait_for_element(selector, timeout=2000)
         
         if not element:
+            # Checkbox might not exist (dynamic field) - skip silently if value is False
+            if not value:
+                return True
             console.print(f"[yellow]Checkbox not found: {field_id}[/yellow]")
             return False
         
         try:
-            element.check()
-            console.print(f"[green]Checked checkbox {field_id}[/green]")
+            if value:
+                element.check()
+                console.print(f"[green]Checked checkbox {field_id}[/green]")
+            else:
+                # Actively uncheck if value is False
+                if element.is_checked():
+                    element.uncheck()
+                    console.print(f"[cyan]Unchecked checkbox {field_id}[/cyan]")
             # Wait briefly for any conditional fields to appear
             self.page.wait_for_timeout(500)
             return True
@@ -350,12 +355,9 @@ class VidexFormFiller:
         field_type = self._get_field_type(field_id)
         
         # Handle checkboxes specially - False means uncheck, True means check
-        if field_type == "checkbox":
-            if isinstance(value, bool):
-                return self._fill_checkbox_field(field_id, value)
-            else:
-                # Skip non-boolean values for checkboxes
-                return True
+        # Also treat boolean values as checkboxes even if field_type is unknown
+        if field_type == "checkbox" or isinstance(value, bool):
+            return self._fill_checkbox_field(field_id, bool(value))
         
         # Skip empty values for non-checkbox fields
         if value is None or value == "":

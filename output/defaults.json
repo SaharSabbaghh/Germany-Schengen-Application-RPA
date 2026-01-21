@@ -5,22 +5,28 @@
   "number_of_entries": "Single entry",
   "reference_type": "Inviting person",
   
+  "birth_name": "",
+  "nationality_at_birth": "",
+  "national_id": "",
+  "has_residence_permit": false,
+  "occupation": "Other professions",
+  "purpose_of_visit": "Tourism",
+  
   "purpose_description": "",
   "additional_info": "",
   
   "applicant_pays": false,
   "third_party_pays": true,
-  "inviter_pays": true,
+  "inviter_pays": false,
+  "other_sponsor_pays": true,
   
   "cash": false,
   "credit_cards": false,
-  "accommodation_prepaid": true,
-  "transport_prepaid": true,
+  "accommodation_prepaid": false,
+  "transport_prepaid": false,
   "travellers_cheques": false,
   "all_expenses_covered": true,
   "other_means": false,
   
-  "eu_family_member": false,
-  "has_residence_permit": false
+  "eu_family_member": false
 }
-

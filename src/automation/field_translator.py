@@ -118,6 +118,24 @@ ENGLISH_TO_GERMAN = {
     "sponsor_pays": "reisedaten.reisekostenUebernahme.dritte",
     "inviter_pays": "reisedaten.reisekostenUebernahme.einlader",
     "host_pays": "reisedaten.reisekostenUebernahme.einlader",
+    "other_sponsor_pays": "reisedaten.reisekostenUebernahme.organisation",
+    "organisation_pays": "reisedaten.reisekostenUebernahme.organisation",
+    
+    # Sponsor Section (for when other_sponsor_pays is used)
+    "sponsor_type": "verpflichtungserklaerungsgeber.art",
+    "sponsor_surname": "verpflichtungserklaerungsgeber.ansprechpartner.familienname",
+    "sponsor_first_name": "verpflichtungserklaerungsgeber.ansprechpartner.vorname",
+    "sponsor_date_of_birth": "verpflichtungserklaerungsgeber.ansprechpartner.geburtsdatum",
+    "sponsor_birth_place": "verpflichtungserklaerungsgeber.ansprechpartner.geburtsort",
+    "sponsor_gender": "verpflichtungserklaerungsgeber.ansprechpartner.geschlecht",
+    "sponsor_nationality": "verpflichtungserklaerungsgeber.ansprechpartner.staatsangehoerigkeit",
+    "sponsor_street": "verpflichtungserklaerungsgeber.ansprechpartner.anschrift.strasse",
+    "sponsor_house_number": "verpflichtungserklaerungsgeber.ansprechpartner.anschrift.hausnummer",
+    "sponsor_postal_code": "verpflichtungserklaerungsgeber.ansprechpartner.anschrift.plz",
+    "sponsor_city": "verpflichtungserklaerungsgeber.ansprechpartner.anschrift.ort",
+    "sponsor_country": "verpflichtungserklaerungsgeber.ansprechpartner.anschrift.land",
+    "sponsor_phone": "verpflichtungserklaerungsgeber.ansprechpartner.kontaktdaten.telefon",
+    "sponsor_email": "verpflichtungserklaerungsgeber.ansprechpartner.kontaktdaten.email",
     
     # Means of Support
     "has_cash": "reisedaten.lebensunterhalt.bar",
@@ -132,6 +150,7 @@ ENGLISH_TO_GERMAN = {
     "transport_prepaid": "reisedaten.lebensunterhalt.befoerderung",
     "prepaid_transport": "reisedaten.lebensunterhalt.befoerderung",
     "other_means": "reisedaten.lebensunterhalt.sonstiges",
+    "other_means_specify": "reisedaten.lebensunterhalt.sonstigesAngabe",
     
     # Biometrics
     "fingerprints_collected": "antragsteller.biometrie.fingerabdrueckeErfassungsDatum_vorhanden",

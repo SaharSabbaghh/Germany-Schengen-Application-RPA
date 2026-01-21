@@ -231,14 +231,122 @@ class ApplicantDataLoader:
         # Flatten first
         flat_raw = flatten_applicant_data(self.raw_data)
         
+        # Auto-generate other_means_specify from employer data if not provided
+        if "other_means_specify" not in flat_raw:
+            employer_info = self._build_employer_info(flat_raw)
+            if employer_info:
+                flat_raw["other_means_specify"] = employer_info
+        
         # Translate if using English mode
         if self._translator:
             self.flat_data = self._translator.translate_data(flat_raw)
         else:
             self.flat_data = flat_raw
         
+        # Auto-populate sponsor fields from employer fields (Section 22) if other_sponsor_pays is used
+        # (do this after translation so defaults are applied)
+        self._copy_employer_to_sponsor_translated(self.flat_data)
+        
         self._loaded = True
         return self
+    
+    def _build_employer_info(self, data: dict[str, Any]) -> str:
+        """Build employer info string for 'other means specify' field."""
+        parts = []
+        
+        # Employer name
+        employer = data.get("employer", "")
+        if employer:
+            parts.append(employer)
+        
+        # Address
+        address_parts = []
+        street = data.get("employer_street", "")
+        house_num = data.get("employer_house_number", "")
+        if street:
+            addr = street
+            if house_num:
+                addr += f" {house_num}"
+            address_parts.append(addr)
+        
+        postal = data.get("employer_postal_code", "")
+        city = data.get("employer_city", "")
+        if postal or city:
+            address_parts.append(f"{postal} {city}".strip())
+        
+        country = data.get("employer_country", "")
+        if country:
+            address_parts.append(country)
+        
+        if address_parts:
+            parts.append(", ".join(address_parts))
+        
+        # Phone
+        phone = data.get("phone", "")
+        if phone:
+            parts.append(f"Tel: {phone}")
+        
+        return ", ".join(parts) if parts else ""
+    
+    def _copy_employer_to_sponsor(self, data: dict[str, Any]) -> None:
+        """Copy employer fields (Section 22) to sponsor fields if other_sponsor_pays is used."""
+        # Only copy if other_sponsor_pays is set
+        if not data.get("other_sponsor_pays", False):
+            return
+        
+        # For company/employer sponsor, use employer data from Section 22
+        # The sponsor is a company, so we use employer name as contact name
+        employer_to_sponsor = {
+            "employer": "sponsor_surname",  # Company name goes in surname field
+            "employer_street": "sponsor_street",
+            "employer_house_number": "sponsor_house_number",
+            "employer_postal_code": "sponsor_postal_code",
+            "employer_city": "sponsor_city",
+            "employer_country": "sponsor_country",
+            "phone": "sponsor_phone",  # Applicant's phone as contact
+            "email": "sponsor_email",  # Applicant's email as contact
+        }
+        
+        for employer_field, sponsor_field in employer_to_sponsor.items():
+            # Only copy if sponsor field is not already provided
+            if sponsor_field not in data or not data[sponsor_field]:
+                employer_value = data.get(employer_field, "")
+                if employer_value:
+                    data[sponsor_field] = employer_value
+        
+        # Set default sponsor type to "Company" for employer
+        if "sponsor_type" not in data or not data["sponsor_type"]:
+            data["sponsor_type"] = "Company"
+    
+    def _copy_employer_to_sponsor_translated(self, data: dict[str, Any]) -> None:
+        """Copy employer fields (Section 22) to sponsor fields (using translated German field names)."""
+        # Only copy if other_sponsor_pays (organisation) is set
+        if not data.get("reisedaten.reisekostenUebernahme.organisation", False):
+            return
+        
+        # Mapping from employer German IDs to sponsor German IDs
+        # Employer = Section 22 = antragsteller.personendaten.berufdaten
+        employer_to_sponsor = {
+            "antragsteller.personendaten.berufdaten.firmenname": "verpflichtungserklaerungsgeber.ansprechpartner.familienname",
+            "antragsteller.personendaten.berufdaten.strasse": "verpflichtungserklaerungsgeber.ansprechpartner.anschrift.strasse",
+            "antragsteller.personendaten.berufdaten.hausnummer": "verpflichtungserklaerungsgeber.ansprechpartner.anschrift.hausnummer",
+            "antragsteller.personendaten.berufdaten.plz": "verpflichtungserklaerungsgeber.ansprechpartner.anschrift.plz",
+            "antragsteller.personendaten.berufdaten.ort": "verpflichtungserklaerungsgeber.ansprechpartner.anschrift.ort",
+            "antragsteller.personendaten.berufdaten.land": "verpflichtungserklaerungsgeber.ansprechpartner.anschrift.land",
+            "antragsteller.personendaten.staendigeAnschrift.kontaktdaten.telefon": "verpflichtungserklaerungsgeber.ansprechpartner.kontaktdaten.telefon",
+            "antragsteller.personendaten.staendigeAnschrift.kontaktdaten.email": "verpflichtungserklaerungsgeber.ansprechpartner.kontaktdaten.email",
+        }
+        
+        for employer_field, sponsor_field in employer_to_sponsor.items():
+            # Only copy if sponsor field is not already provided
+            if sponsor_field not in data or not data[sponsor_field]:
+                employer_value = data.get(employer_field, "")
+                if employer_value:
+                    data[sponsor_field] = employer_value
+        
+        # Set default sponsor type to "Company" for employer
+        if "verpflichtungserklaerungsgeber.art" not in data or not data["verpflichtungserklaerungsgeber.art"]:
+            data["verpflichtungserklaerungsgeber.art"] = "Company"
     
     def validate(self) -> tuple[bool, list[str]]:
         """Validate the loaded data."""

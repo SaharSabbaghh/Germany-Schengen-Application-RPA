@@ -1,0 +1,53 @@
+{
+  "surname": "Garcia",
+  "first_name": "Maria",
+  "date_of_birth": "15.03.1990",
+  "place_of_birth": "Madrid",
+  "country_of_birth": "Spain",
+  "gender": "Female",
+  "marital_status": "Single",
+  "nationality": "Spain",
+
+  "employer": "Tech Solutions SL",
+  "employer_street": "Calle Mayor",
+  "employer_house_number": "25",
+  "employer_postal_code": "28013",
+  "employer_city": "Madrid",
+  "employer_country": "Spain",
+
+  "street": "Avenida de la Paz",
+  "house_number": "42",
+  "apartment": "3B",
+  "postal_code": "28034",
+  "city": "Madrid",
+  "country": "Spain",
+  "phone": "0034 612345678",
+  "email": "maria.garcia@email.com",
+
+  "passport_number": "ABC123456",
+  "passport_issue_date": "01.06.2020",
+  "passport_expiry_date": "01.06.2030",
+  "passport_issuing_country": "Spain",
+  "passport_issued_by": "Spanish Government",
+  "passport_issue_place": "Madrid",
+
+  "first_entry_country": "Germany",
+  "main_destination": "Germany",
+  "visa_start_date": "01.03.2026",
+  "visa_end_date": "15.03.2026",
+
+  "inviter_surname": "Mueller",
+  "inviter_first_name": "Hans",
+  "inviter_gender": "Male",
+  "inviter_date_of_birth": "20.05.1985",
+  "inviter_birth_place": "Berlin",
+  "inviter_nationality": "Germany",
+  "inviter_street": "Hauptstrasse",
+  "inviter_house_number": "10",
+  "inviter_postal_code": "10115",
+  "inviter_city": "Berlin",
+  "inviter_country": "Germany",
+  "inviter_phone": "0049 30 12345678",
+  "inviter_email": "hans.mueller@email.de"
+}
+
