@@ -14,11 +14,11 @@
   "employer_city": "Madrid",
   "employer_country": "Spain",
 
-  "street": "Avenida de la Paz",
-  "house_number": "42",
-  "postal_code": "28034",
-  "city": "Madrid",
-  "country": "Spain",
+  "maid_street": "Avenida de la Paz",
+  "maid_house_number": "42",
+  "maid_postal_code": "28034",
+  "maid_city": "Madrid",
+  "maid_country": "Spain",
   "maid_phone_number": "0034 612345678",
   "maid_email": "maria.garcia@email.com",
 

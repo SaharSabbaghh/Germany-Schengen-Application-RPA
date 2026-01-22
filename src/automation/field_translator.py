@@ -52,7 +52,13 @@ ENGLISH_TO_GERMAN = {
     "employer_city": "antragsteller.personendaten.berufdaten.ort",
     "employer_country": "antragsteller.personendaten.berufdaten.land",
     
-    # Home Address
+    # Home Address (maid_* prefix is primary)
+    "maid_street": "antragsteller.personendaten.staendigeAnschrift.strasse",
+    "maid_house_number": "antragsteller.personendaten.staendigeAnschrift.hausnummer",
+    "maid_postal_code": "antragsteller.personendaten.staendigeAnschrift.plz",
+    "maid_city": "antragsteller.personendaten.staendigeAnschrift.ort",
+    "maid_country": "antragsteller.personendaten.staendigeAnschrift.land",
+    # Legacy aliases
     "street": "antragsteller.personendaten.staendigeAnschrift.strasse",
     "home_street": "antragsteller.personendaten.staendigeAnschrift.strasse",
     "house_number": "antragsteller.personendaten.staendigeAnschrift.hausnummer",

@@ -14,11 +14,11 @@
   "employer_city": "",
   "employer_country": "",
 
-  "street": "",
-  "house_number": "",
-  "postal_code": "",
-  "city": "",
-  "country": "",
+  "maid_street": "",
+  "maid_house_number": "",
+  "maid_postal_code": "",
+  "maid_city": "",
+  "maid_country": "",
   "maid_phone_number": "",
   "maid_email": "",
 
