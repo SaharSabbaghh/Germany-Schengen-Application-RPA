@@ -231,6 +231,13 @@ class ApplicantDataLoader:
         # Flatten first
         flat_raw = flatten_applicant_data(self.raw_data)
         
+        # Auto-generate client_name from client_first_name + client_surname if not provided
+        if "client_name" not in flat_raw or not flat_raw["client_name"]:
+            first = flat_raw.get("client_first_name", "") or flat_raw.get("inviter_first_name", "")
+            surname = flat_raw.get("client_surname", "") or flat_raw.get("inviter_surname", "")
+            if first and surname:
+                flat_raw["client_name"] = f"{first} {surname}"
+        
         # Auto-generate other_means_specify from employer data if not provided
         if "other_means_specify" not in flat_raw:
             employer_info = self._build_employer_info(flat_raw)
@@ -288,37 +295,43 @@ class ApplicantDataLoader:
         
         return ", ".join(parts) if parts else ""
     
-    def _copy_inviter_to_sponsor(self, data: dict[str, Any]) -> None:
-        """Copy inviter fields to sponsor fields if other_sponsor_pays is used."""
+    def _copy_client_to_sponsor(self, data: dict[str, Any]) -> None:
+        """Copy client fields to sponsor fields if other_sponsor_pays is used."""
         # Only copy if other_sponsor_pays is set
         if not data.get("other_sponsor_pays", False):
             return
         
-        # Copy inviter data to sponsor (Person type)
-        inviter_to_sponsor = {
-            "inviter_surname": "sponsor_surname",
-            "inviter_first_name": "sponsor_first_name",
-            "inviter_gender": "sponsor_gender",
-            "inviter_date_of_birth": "sponsor_date_of_birth",
-            "inviter_birth_place": "sponsor_birth_place",
-            "inviter_nationality": "sponsor_nationality",
-            "inviter_street": "sponsor_street",
-            "inviter_house_number": "sponsor_house_number",
-            "inviter_postal_code": "sponsor_postal_code",
-            "inviter_city": "sponsor_city",
-            "inviter_country": "sponsor_country",
-            "inviter_phone": "sponsor_phone",
-            "inviter_email": "sponsor_email",
+        # Copy client data to sponsor (Person type)
+        # Check client_* first, fall back to inviter_* for backwards compatibility
+        client_to_sponsor = {
+            ("client_surname", "inviter_surname"): "sponsor_surname",
+            ("client_first_name", "inviter_first_name"): "sponsor_first_name",
+            ("client_gender", "inviter_gender"): "sponsor_gender",
+            ("client_date_of_birth", "inviter_date_of_birth"): "sponsor_date_of_birth",
+            ("client_birth_place", "inviter_birth_place"): "sponsor_birth_place",
+            ("client_nationality", "inviter_nationality"): "sponsor_nationality",
+            ("hotel_street", "client_street", "inviter_street"): "sponsor_street",
+            ("hotel_house_number", "client_house_number", "inviter_house_number"): "sponsor_house_number",
+            ("hotel_postal_code", "client_postal_code", "inviter_postal_code"): "sponsor_postal_code",
+            ("hotel_city", "client_city", "inviter_city"): "sponsor_city",
+            ("hotel_country", "client_country", "inviter_country"): "sponsor_country",
+            ("hotel_phone", "client_phone", "inviter_phone"): "sponsor_phone",
+            ("hotel_email", "client_email", "inviter_email"): "sponsor_email",
         }
         
-        for inviter_field, sponsor_field in inviter_to_sponsor.items():
+        for source_fields, sponsor_field in client_to_sponsor.items():
             # Only copy if sponsor field is not already provided
             if sponsor_field not in data or not data[sponsor_field]:
-                inviter_value = data.get(inviter_field, "")
-                if inviter_value:
-                    data[sponsor_field] = inviter_value
+                # Try each source field in order until one has a value
+                value = ""
+                for field in source_fields:
+                    value = data.get(field, "")
+                    if value:
+                        break
+                if value:
+                    data[sponsor_field] = value
         
-        # Set default sponsor type to "Person" for inviter
+        # Set default sponsor type to "Person"
         if "sponsor_type" not in data or not data["sponsor_type"]:
             data["sponsor_type"] = "Person"
     

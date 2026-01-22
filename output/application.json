@@ -8,7 +8,6 @@
   "marital_status": "Single",
   "nationality": "Spain",
 
-  "client_name": "Tech Solutions SL",
   "employer_street": "Calle Mayor",
   "employer_house_number": "25",
   "employer_postal_code": "28013",
@@ -34,18 +33,15 @@
   "visa_start_date": "01.03.2026",
   "visa_end_date": "15.03.2026",
 
-  "inviter_surname": "Mueller",
-  "inviter_first_name": "Hans",
-  "inviter_gender": "Male",
-  "inviter_date_of_birth": "20.05.1985",
-  "inviter_birth_place": "Berlin",
-  "inviter_nationality": "Germany",
-  "inviter_street": "Hauptstrasse",
-  "inviter_house_number": "10",
-  "inviter_postal_code": "10115",
-  "inviter_city": "Berlin",
-  "inviter_country": "Germany",
-  "inviter_phone": "0049 30 12345678",
-  "inviter_email": "hans.mueller@email.de"
+  "client_surname": "Mueller",
+  "client_first_name": "Hans",
+  "client_gender": "Male",
+  "client_nationality": "Germany",
+  "hotel_street": "Hauptstrasse",
+  "hotel_house_number": "10",
+  "hotel_postal_code": "10115",
+  "hotel_city": "Berlin",
+  "hotel_country": "Germany",
+  "hotel_phone": "0049 30 12345678",
+  "hotel_email": "hans.mueller@email.de"
 }
-
