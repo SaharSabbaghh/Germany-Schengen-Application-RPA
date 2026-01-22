@@ -8,7 +8,7 @@
   "marital_status": "Single",
   "nationality": "Spain",
 
-  "employer": "Tech Solutions SL",
+  "client_name": "Tech Solutions SL",
   "employer_street": "Calle Mayor",
   "employer_house_number": "25",
   "employer_postal_code": "28013",
@@ -17,12 +17,11 @@
 
   "street": "Avenida de la Paz",
   "house_number": "42",
-  "apartment": "3B",
   "postal_code": "28034",
   "city": "Madrid",
   "country": "Spain",
-  "phone": "0034 612345678",
-  "email": "maria.garcia@email.com",
+  "maid_phone_number": "0034 612345678",
+  "maid_email": "maria.garcia@email.com",
 
   "passport_number": "ABC123456",
   "passport_issue_date": "01.06.2020",
@@ -31,8 +30,7 @@
   "passport_issued_by": "Spanish Government",
   "passport_issue_place": "Madrid",
 
-  "first_entry_country": "Germany",
-  "main_destination": "Germany",
+  "destination": "Germany",
   "visa_start_date": "01.03.2026",
   "visa_end_date": "15.03.2026",
 

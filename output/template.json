@@ -8,7 +8,7 @@
   "marital_status": "Single | Married | Divorced | Widowed | Separated",
   "nationality": "",
 
-  "employer": "",
+  "client_name": "",
   "employer_street": "",
   "employer_house_number": "",
   "employer_postal_code": "",
@@ -17,12 +17,11 @@
 
   "street": "",
   "house_number": "",
-  "apartment": "",
   "postal_code": "",
   "city": "",
   "country": "",
-  "phone": "",
-  "email": "",
+  "maid_phone_number": "",
+  "maid_email": "",
 
   "passport_number": "",
   "passport_issue_date": "DD.MM.YYYY",
@@ -31,8 +30,7 @@
   "passport_issued_by": "",
   "passport_issue_place": "",
 
-  "first_entry_country": "Germany",
-  "main_destination": "Germany",
+  "destination": "Germany",
   "visa_start_date": "DD.MM.YYYY",
   "visa_end_date": "DD.MM.YYYY",
 

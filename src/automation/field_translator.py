@@ -35,6 +35,7 @@ ENGLISH_TO_GERMAN = {
     "profession": "antragsteller.personendaten.berufdaten.berufAuswahl",
     "employer": "antragsteller.personendaten.berufdaten.firmenname",
     "company_name": "antragsteller.personendaten.berufdaten.firmenname",
+    "client_name": "antragsteller.personendaten.berufdaten.firmenname",
     "employer_street": "antragsteller.personendaten.berufdaten.strasse",
     "employer_house_number": "antragsteller.personendaten.berufdaten.hausnummer",
     "employer_address_extra": "antragsteller.personendaten.berufdaten.sonstigeAdressangaben",
@@ -58,7 +59,9 @@ ENGLISH_TO_GERMAN = {
     "phone": "antragsteller.personendaten.staendigeAnschrift.kontaktdaten.telefon",
     "telephone": "antragsteller.personendaten.staendigeAnschrift.kontaktdaten.telefon",
     "mobile": "antragsteller.personendaten.staendigeAnschrift.kontaktdaten.telefon",
+    "maid_phone_number": "antragsteller.personendaten.staendigeAnschrift.kontaktdaten.telefon",
     "email": "antragsteller.personendaten.staendigeAnschrift.kontaktdaten.email",
+    "maid_email": "antragsteller.personendaten.staendigeAnschrift.kontaktdaten.email",
     
     # Passport
     "passport_type": "antragsteller.pass.passArt",
@@ -84,6 +87,8 @@ ENGLISH_TO_GERMAN = {
     "entry_country": "reisedaten.ersteinreiseStaat",
     "main_destination": "reisedaten.hauptzielListe[0]",
     "destination_country": "reisedaten.hauptzielListe[0]",
+    # Single "destination" field that fills both first_entry_country and main_destination
+    "destination": ["reisedaten.ersteinreiseStaat", "reisedaten.hauptzielListe[0]"],
     "number_of_entries": "visumdaten.anzahlEinreisen",
     "entries": "visumdaten.anzahlEinreisen",
     "visa_start_date": "visumdaten.gueltigkeit.von",
@@ -123,6 +128,8 @@ ENGLISH_TO_GERMAN = {
     
     # Sponsor Section (for when other_sponsor_pays is used)
     "sponsor_type": "verpflichtungserklaerungsgeber.art",
+    "sponsor_company_name": "verpflichtungserklaerungsgeber.firmenname",
+    "sponsor_institution_name": "verpflichtungserklaerungsgeber.firmenname",
     "sponsor_surname": "verpflichtungserklaerungsgeber.ansprechpartner.familienname",
     "sponsor_first_name": "verpflichtungserklaerungsgeber.ansprechpartner.vorname",
     "sponsor_date_of_birth": "verpflichtungserklaerungsgeber.ansprechpartner.geburtsdatum",
@@ -184,7 +191,7 @@ ENGLISH_TO_GERMAN = {
 }
 
 # Reverse mapping for reference
-GERMAN_TO_ENGLISH = {v: k for k, v in ENGLISH_TO_GERMAN.items()}
+GERMAN_TO_ENGLISH = {v: k for k, v in ENGLISH_TO_GERMAN.items() if not isinstance(v, list)}
 
 
 class FieldTranslator:
@@ -217,8 +224,14 @@ class FieldTranslator:
         for key, value in english_data.items():
             if key.startswith('_'):  # Skip metadata keys like _instructions
                 continue
-            german_key = self.translate_field_name(key)
-            result[german_key] = value
+            german_key = ENGLISH_TO_GERMAN.get(key)
+            
+            # Handle multi-field mapping (one English field -> multiple German fields)
+            if isinstance(german_key, list):
+                for gk in german_key:
+                    result[gk] = value
+            else:
+                result[self.translate_field_name(key)] = value
         
         return result
     
@@ -298,8 +311,7 @@ def create_english_template() -> dict[str, Any]:
         "purpose_of_visit": "",  # Tourism / Business / Visit family or friends
         "purpose_description": "",
         "additional_info": "",
-        "first_entry_country": "Germany",
-        "main_destination": "Germany",
+        "destination": "Germany",
         "number_of_entries": "Single entry",  # Single entry / Two entries / Multiple entries
         "visa_start_date": "",  # DD.MM.YYYY
         "visa_end_date": "",  # DD.MM.YYYY

@@ -245,7 +245,7 @@ class ApplicantDataLoader:
         
         # Auto-populate sponsor fields from employer fields (Section 22) if other_sponsor_pays is used
         # (do this after translation so defaults are applied)
-        self._copy_employer_to_sponsor_translated(self.flat_data)
+        self._copy_inviter_to_sponsor_translated(self.flat_data)
         
         self._loaded = True
         return self
@@ -254,8 +254,8 @@ class ApplicantDataLoader:
         """Build employer info string for 'other means specify' field."""
         parts = []
         
-        # Employer name
-        employer = data.get("employer", "")
+        # Employer/client name
+        employer = data.get("client_name", "") or data.get("employer", "")
         if employer:
             parts.append(employer)
         
@@ -288,65 +288,72 @@ class ApplicantDataLoader:
         
         return ", ".join(parts) if parts else ""
     
-    def _copy_employer_to_sponsor(self, data: dict[str, Any]) -> None:
-        """Copy employer fields (Section 22) to sponsor fields if other_sponsor_pays is used."""
+    def _copy_inviter_to_sponsor(self, data: dict[str, Any]) -> None:
+        """Copy inviter fields to sponsor fields if other_sponsor_pays is used."""
         # Only copy if other_sponsor_pays is set
         if not data.get("other_sponsor_pays", False):
             return
         
-        # For company/employer sponsor, use employer data from Section 22
-        # The sponsor is a company, so we use employer name as contact name
-        employer_to_sponsor = {
-            "employer": "sponsor_surname",  # Company name goes in surname field
-            "employer_street": "sponsor_street",
-            "employer_house_number": "sponsor_house_number",
-            "employer_postal_code": "sponsor_postal_code",
-            "employer_city": "sponsor_city",
-            "employer_country": "sponsor_country",
-            "phone": "sponsor_phone",  # Applicant's phone as contact
-            "email": "sponsor_email",  # Applicant's email as contact
+        # Copy inviter data to sponsor (Person type)
+        inviter_to_sponsor = {
+            "inviter_surname": "sponsor_surname",
+            "inviter_first_name": "sponsor_first_name",
+            "inviter_gender": "sponsor_gender",
+            "inviter_date_of_birth": "sponsor_date_of_birth",
+            "inviter_birth_place": "sponsor_birth_place",
+            "inviter_nationality": "sponsor_nationality",
+            "inviter_street": "sponsor_street",
+            "inviter_house_number": "sponsor_house_number",
+            "inviter_postal_code": "sponsor_postal_code",
+            "inviter_city": "sponsor_city",
+            "inviter_country": "sponsor_country",
+            "inviter_phone": "sponsor_phone",
+            "inviter_email": "sponsor_email",
         }
         
-        for employer_field, sponsor_field in employer_to_sponsor.items():
+        for inviter_field, sponsor_field in inviter_to_sponsor.items():
             # Only copy if sponsor field is not already provided
             if sponsor_field not in data or not data[sponsor_field]:
-                employer_value = data.get(employer_field, "")
-                if employer_value:
-                    data[sponsor_field] = employer_value
+                inviter_value = data.get(inviter_field, "")
+                if inviter_value:
+                    data[sponsor_field] = inviter_value
         
-        # Set default sponsor type to "Company" for employer
+        # Set default sponsor type to "Person" for inviter
         if "sponsor_type" not in data or not data["sponsor_type"]:
-            data["sponsor_type"] = "Company"
+            data["sponsor_type"] = "Person"
     
-    def _copy_employer_to_sponsor_translated(self, data: dict[str, Any]) -> None:
-        """Copy employer fields (Section 22) to sponsor fields (using translated German field names)."""
+    def _copy_inviter_to_sponsor_translated(self, data: dict[str, Any]) -> None:
+        """Copy inviter fields to sponsor fields (using translated German field names)."""
         # Only copy if other_sponsor_pays (organisation) is set
         if not data.get("reisedaten.reisekostenUebernahme.organisation", False):
             return
         
-        # Mapping from employer German IDs to sponsor German IDs
-        # Employer = Section 22 = antragsteller.personendaten.berufdaten
-        employer_to_sponsor = {
-            "antragsteller.personendaten.berufdaten.firmenname": "verpflichtungserklaerungsgeber.ansprechpartner.familienname",
-            "antragsteller.personendaten.berufdaten.strasse": "verpflichtungserklaerungsgeber.ansprechpartner.anschrift.strasse",
-            "antragsteller.personendaten.berufdaten.hausnummer": "verpflichtungserklaerungsgeber.ansprechpartner.anschrift.hausnummer",
-            "antragsteller.personendaten.berufdaten.plz": "verpflichtungserklaerungsgeber.ansprechpartner.anschrift.plz",
-            "antragsteller.personendaten.berufdaten.ort": "verpflichtungserklaerungsgeber.ansprechpartner.anschrift.ort",
-            "antragsteller.personendaten.berufdaten.land": "verpflichtungserklaerungsgeber.ansprechpartner.anschrift.land",
-            "antragsteller.personendaten.staendigeAnschrift.kontaktdaten.telefon": "verpflichtungserklaerungsgeber.ansprechpartner.kontaktdaten.telefon",
-            "antragsteller.personendaten.staendigeAnschrift.kontaktdaten.email": "verpflichtungserklaerungsgeber.ansprechpartner.kontaktdaten.email",
+        # Copy inviter data to sponsor (Person type)
+        inviter_to_sponsor = {
+            "referenz.ansprechpartner.familienname": "verpflichtungserklaerungsgeber.ansprechpartner.familienname",
+            "referenz.ansprechpartner.vorname": "verpflichtungserklaerungsgeber.ansprechpartner.vorname",
+            "referenz.ansprechpartner.geschlecht": "verpflichtungserklaerungsgeber.ansprechpartner.geschlecht",
+            "referenz.ansprechpartner.geburtsdatum": "verpflichtungserklaerungsgeber.ansprechpartner.geburtsdatum",
+            "referenz.ansprechpartner.geburtsort": "verpflichtungserklaerungsgeber.ansprechpartner.geburtsort",
+            "referenz.ansprechpartner.staatsangehoerigkeit": "verpflichtungserklaerungsgeber.ansprechpartner.staatsangehoerigkeit",
+            "referenz.ansprechpartner.anschrift.strasse": "verpflichtungserklaerungsgeber.ansprechpartner.anschrift.strasse",
+            "referenz.ansprechpartner.anschrift.hausnummer": "verpflichtungserklaerungsgeber.ansprechpartner.anschrift.hausnummer",
+            "referenz.ansprechpartner.anschrift.plz": "verpflichtungserklaerungsgeber.ansprechpartner.anschrift.plz",
+            "referenz.ansprechpartner.anschrift.ort": "verpflichtungserklaerungsgeber.ansprechpartner.anschrift.ort",
+            "referenz.ansprechpartner.anschrift.land": "verpflichtungserklaerungsgeber.ansprechpartner.anschrift.land",
+            "referenz.ansprechpartner.kontaktdaten.telefon": "verpflichtungserklaerungsgeber.ansprechpartner.kontaktdaten.telefon",
+            "referenz.ansprechpartner.kontaktdaten.email": "verpflichtungserklaerungsgeber.ansprechpartner.kontaktdaten.email",
         }
         
-        for employer_field, sponsor_field in employer_to_sponsor.items():
-            # Only copy if sponsor field is not already provided
+        for inviter_field, sponsor_field in inviter_to_sponsor.items():
             if sponsor_field not in data or not data[sponsor_field]:
-                employer_value = data.get(employer_field, "")
-                if employer_value:
-                    data[sponsor_field] = employer_value
+                inviter_value = data.get(inviter_field, "")
+                if inviter_value:
+                    data[sponsor_field] = inviter_value
         
-        # Set default sponsor type to "Company" for employer
+        # Set sponsor type to "Person"
         if "verpflichtungserklaerungsgeber.art" not in data or not data["verpflichtungserklaerungsgeber.art"]:
-            data["verpflichtungserklaerungsgeber.art"] = "Company"
+            data["verpflichtungserklaerungsgeber.art"] = "Person"
     
     def validate(self) -> tuple[bool, list[str]]:
         """Validate the loaded data."""
