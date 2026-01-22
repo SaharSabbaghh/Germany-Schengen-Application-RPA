@@ -2,7 +2,6 @@
   "_instructions": "Default values that are always applied unless overridden in the applicant JSON",
   
   "passport_type": "Ordinary passport",
-  "number_of_entries": "Single entry",
   "reference_type": "Inviting person",
   
   "birth_name": "",
