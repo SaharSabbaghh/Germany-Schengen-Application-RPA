@@ -9,7 +9,16 @@ import json
 
 # English to German field ID mapping
 ENGLISH_TO_GERMAN = {
-    # Personal Details
+    # Personal Details (maid_* prefix is primary)
+    "maid_surname": "antragsteller.familienname",
+    "maid_first_name": "antragsteller.vorname",
+    "maid_date_of_birth": "antragsteller.geburtsdatum",
+    "maid_place_of_birth": "antragsteller.geburtsort",
+    "maid_country_of_birth": "antragsteller.geburtsland",
+    "maid_gender": "antragsteller.geschlecht",
+    "maid_marital_status": "antragsteller.familienstand",
+    "maid_nationality": "antragsteller.staatsangehoerigkeitListe[0]",
+    # Legacy aliases (backwards compatibility)
     "surname": "antragsteller.familienname",
     "family_name": "antragsteller.familienname",
     "birth_name": "antragsteller.geburtsname",
